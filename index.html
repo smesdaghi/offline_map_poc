@@ -13,28 +13,26 @@
     <script src="cordova.js"></script>
     <script type="text/javascript">
 
-function downloadFile() { //inspired by http://stackoverflow.com/questions/6417055/
+function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
     LocalFileSystem.PERSISTENT, 0, 
     function onFileSystemSuccess(fileSystem) {
+      
       var rootDir = fileSystem.root.fullPath;
-      var fn = rootDir + "/theFile.png";
+      if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
+      var fn = rootDir + target_fn;
+      
       var fileTransfer = new FileTransfer();
-      fileTransfer.download(
-        encodeURI("http://silviaterra.com/static/images/circle_logo_backgrd_match.png"),
-        fn,
+      fileTransfer.download(encodeURI(url), fn,
         function(theFile) { 
             alert("download complete: " + theFile.toURL());
             $("#dl_img").attr("src", theFile.toURL()); 
         },
-        function(error) {
-          alert("download error source " + error.source);
-          alert("download error target " + error.target);
-          alert("download error code: " + error.code);
-        }
+        function(error) { alert("download error code: " + error.code); }
       );    
     },
-    function() { alert("Failure!"); }
+    
+    function() { alert("Failure!"); } //filesystem failure
   );
 };
 
@@ -47,7 +45,7 @@ $(document).ready(function() {
 	
 	$(document).off("deviceready").on("deviceready", function() {
 	  $("#download").off("click").on("click", function() {
-	    downloadFile();
+	    downloadFile("http://silviaterra.com/static/images/circle_logo_backgrd_match.png", "newfile.png");
 	  });
 	}); 
 });    
