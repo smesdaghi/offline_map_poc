@@ -27,7 +27,7 @@
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     
-    <!-- Access SilviaTerra site for API calls -->
-    <access origin="https://silviaterra.com" subdomains="true" />
+    <!-- Access SilviaTerra site for weinre -->
+    <access origin="http://worker.silviaterra.com" subdomains="true" />
 
 </widget>
