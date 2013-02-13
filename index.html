@@ -24,8 +24,8 @@ function downloadFile() { //inspired by http://stackoverflow.com/questions/64170
         encodeURI("http://silviaterra.com/static/images/circle_logo_backgrd_match.png"),
         fn,
         function(theFile) { 
-            alert("download complete: " + theFile.toURI());
-            $("#dl_img").attr("src", theFile.ToURI()); 
+            alert("download complete: " + theFile.toURL());
+            $("#dl_img").attr("src", theFile.ToURL()); 
         },
         function(error) {
           alert("download error source " + error.source);
