@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    id = "com.silviaterra.map_poc"
+    version = "0.1"
+    versionCode = "1"
+    >
+    
+    <preference name="phonegap-version" value="2.3.0" />
+    <preference name="orientation" value="portrait" />
+
+    <name>Offline Mapping</name>
+
+    <description>
+        Cache Mapbox tiles in PhoneGap
+    </description>
+
+    <author href="http://www.silviaterra.com"
+        email="mobile@silviaterra.com">
+        SilviaTerra
+    </author>
+
+    <gap:platforms>
+        <gap:platform name="android" minVersion="2.2" />
+    </gap:platforms>
+
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+    <feature name="http://api.phonegap.com/1.0/network"/>
+    
+    <!-- Access SilviaTerra site for API calls -->
+    <access origin="https://silviaterra.com" subdomains="true" />
+
+</widget>

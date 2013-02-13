@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proof of Concept</title>
+    <meta name="viewport" content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0"> 
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+    <style>
+    #map { height: 300px; }
+    </style>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script type="text/javascript">
+
+function downloadFile() { //from http://stackoverflow.com/questions/6417055/
+  window.requestFileSystem(
+    LocalFileSystem.PERSISTENT, 0, 
+    function onFileSystemSuccess(fileSystem) {
+      fileSystem.root.getFile(
+        "dummy.html", {create: true, exclusive: false}, 
+        function gotFileEntry(fileEntry) {
+          var sPath = fileEntry.fullPath.replace("dummy.html","");
+          alert(sPath);
+          var fileTransfer = new FileTransfer();
+          fileEntry.remove();
+
+          fileTransfer.download(
+            "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
+            sPath + "theFile.pdf",
+            function(theFile) {
+              alert("download complete: " + theFile.toURI());
+            },
+            function(error) {
+              alert("download error source " + error.source);
+              alert("download error target " + error.target);
+              alert("upload error code: " + error.code);
+            }
+          );
+        }, 
+        fail);
+    },
+    fail);
+};
+
+$(document).ready(function() {
+    var map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
+	L.tileLayer('file:///home/max/tiles/{z}/{x}/{y}.png', {
+	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
+	    maxZoom: 18
+	}).addTo(map);
+	
+	$(document).off("deviceready").on("deviceready", function() {
+	  $("#download").off("click").on("click", function() {
+	    downloadFile();
+	  });
+	}); 
+});    
+
+    </script>
+</head>
+<body> 
+    <div id="map"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <button id="download" style="font-size:200;padding:20px;">Download</button>
+    </div>
+</body>
+</html>
