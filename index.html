@@ -10,6 +10,7 @@
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+    <script src="tileUtils.js"></script>
     <script src="cordova.js"></script>
     <script type="text/javascript">
 
@@ -47,10 +48,11 @@ function downloadFile(url, targetFn) { //inspired by http://stackoverflow.com/qu
 };
 
 function initMap(tile_url_format) {
-    var map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
+    var map = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
     L.tileLayer(tile_url_format, {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
-        maxZoom: 18
+        minZoom: 3,
+        maxZoom: 17
     }).addTo(map);
 }
 
