@@ -15,6 +15,7 @@
     <script type="text/javascript">
 
 //sloppy global but ok for now
+var MAP;
 var FILESYSTEM;
 
 function clearTiles(callback) {
@@ -29,31 +30,17 @@ function clearTiles(callback) {
     );
 }
 
-function downloadFile(url, targetFn) { //inspired by http://stackoverflow.com/questions/6417055/
-  window.requestFileSystem(
-    LocalFileSystem.PERSISTENT, 0, 
-    function(fileSystem) { //success
-        var rootDir = fileSystem.root.fullPath;
-        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
-        var fn = rootDir + targetFn;
-      
-        var fileTransfer = new FileTransfer();
-        fileTransfer.download(encodeURI(url), fn,
-            function(theFile) { $("#dl_img").attr("src", theFile.toURL()); },
-            function(error) { alert("download error code: " + error.code); }
-        );    
-    },
-    function() { alert("Failure!"); } //filesystem failure
-  );
-};
-
-function initMap(tile_url_format) {
-    var map = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
+function reloadMap(tile_url_format) {
+    if (MAP) { //clear out old map if exists
+        $("#map").remove();
+        $("map_wrapper").html('<div id="map"></div>');
+    }
+    MAP = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
     L.tileLayer(tile_url_format, {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
         minZoom: 3,
         maxZoom: 17
-    }).addTo(map);
+    }).addTo(MAP);
 }
 
 $(document).ready(function() {
@@ -72,14 +59,28 @@ $(document).ready(function() {
 		        FILESYSTEM = fs; //set global - sloppy, I know
 		        var rootDir = fs.root.fullPath;
 		        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
-		        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
+		        
+		        var mapID = localStorage["MAPBOX_ID"];
+		        if (mapID) {
+		          reloadMap(rootDir + 'tiles/' + localStorage["MAPBOX_ID"] + '/{z}/{x}/{y}.png');
+		        }
 		    },
 		    function() { alert("Failure!"); } //filesystem failure
 		);
+		
+		$("#clear").off("click").on("click", function() {
+		    clearTiles(function(){ alert("Tiles cleared successfully"); });
+		});
 
 	    $("#download").off("click").on("click", function() {
 	        var mapID = localStorage["MAPBOX_ID"];
 	        if (mapID) {
+	           bulkDownload(
+	               pyramid(mapID, 38.255, -85.73, {'minZoom':14, 'maxZoom':16}), //tile urls
+	               'tiles',
+	               function() {}
+	           );
+	        
 	           downloadFile(
 	               'http://api.tiles.mapbox.com/v3/' + mapID + '/15/8580/12610.png',
 	               'tiles/15/8580/12610.png'
@@ -94,13 +95,13 @@ $(document).ready(function() {
     </script>
 </head>
 <body> 
-    <div id="map"></div>
+    <div id="map_wrapper"><div id="map"></div></div>
     <div style="text-align:center;margin-top:20px;">
       MapBox ID: <input id="mapbox_id" type="text" size="30" placeholder="e.g. examples.map-yr0njcqy"/>
       <br /><br />
-      <button id="download" style="font-size:200;padding:20px;">Download Tiles</button>
+      <button id="download" style="font-size:200%;padding:20px;">Download Tiles</button>
+      <button id="clear" style="font-size:200%;padding:20px;">Clear Tiles</button>
     </div>
-    <img id="dl_img" />
     
     <!-- DEBUG SCRIPT -->
     <script src="http://worker.silviaterra.com:8081/target/target-script-min.js#anonymous"></script>

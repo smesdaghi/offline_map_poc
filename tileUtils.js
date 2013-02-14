@@ -14,12 +14,14 @@ function pyramid(mapID, lat, lon, options) {
     
     //handle options
     var zoomLimit = options['zoomLimit'] || 14;
+    var minZoom = options['minZoom'] || 3;
+    var maxZoom = options['maxZoom'] || 3;
     var radius = options['radius'] || 1; 
     
     //declare vars outside of loop
     var urls = [], zoom, t_x, t_y, r, x, y;
     
-    for (zoom=3; zoom<18; zoom++) {
+    for (zoom=minZoom; zoom<maxZoom; zoom++) {
         t_x = long2tile(lon, zoom);
         t_y = lat2tile(lat, zoom);
         r = radius * Math.pow(2, (Math.max(zoom, zoomLimit) - zoomLimit));
