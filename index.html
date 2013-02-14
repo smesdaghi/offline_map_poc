@@ -28,13 +28,13 @@ function clearTiles(callback) {
     );
 }
 
-function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
+function downloadFile(url, targetFn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
     LocalFileSystem.PERSISTENT, 0, 
     function(fileSystem) { //success
         var rootDir = fileSystem.root.fullPath;
         if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
-        var fn = rootDir + target_fn;
+        var fn = rootDir + targetFn;
       
         var fileTransfer = new FileTransfer();
         fileTransfer.download(encodeURI(url), fn,
@@ -76,7 +76,15 @@ $(document).ready(function() {
 		);
 
 	    $("#download").off("click").on("click", function() {
-	      downloadFile("http://silviaterra.com/static/images/circle_logo_backgrd_match.png", "newfile.png");
+	        var mapID = localStorage["MAPBOX_ID"];
+	        if (mapID) {
+	           downloadFile(
+	               'http://api.tiles.mapbox.com/v3/' + mapID + '/15/8580/12610.png',
+	               'tiles/15/8580/12610.png'
+	           );
+	        } else {
+	           alert("Enter a MapBox Map ID");
+	        }
 	    });
 	}); 
 });    
