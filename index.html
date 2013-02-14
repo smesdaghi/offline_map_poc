@@ -17,6 +17,7 @@
 
 //sloppy global but ok for now
 var MAP;
+var TILE_LAYER;
 var FILESYSTEM;
 
 function clearTiles(callback) {
@@ -44,19 +45,25 @@ function tileFormat4FS(fileSystem) {
 }
 
 function reloadMap() {
+    if (!MAP) {
+        MAP = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
+    }
+
+    if (TILE_LAYER) { //clear out old layer if exists
+        MAP.removeLayer(TILE_LAYER);
+        TILE_LAYER = null;
+    }
+    
     format = tileFormat4FS(FILESYSTEM);
     if (!format) { return; }
-
-    if (MAP) { //clear out old map if exists
-        $("#map").remove();
-        $("map_wrapper").html('<div id="map"></div>');
-    }
-    MAP = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
-    L.tileLayer(format, {
+    
+    TILE_LAYER = L.tileLayer(format, {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
         minZoom: 3,
         maxZoom: 17
-    }).addTo(MAP);
+    })
+    
+    TILE_LAYER.addTo(MAP);
 }
 
 $(document).ready(function() {
@@ -104,8 +111,8 @@ $(document).ready(function() {
     <div style="text-align:center;margin-top:20px;">
       MapBox ID: <input id="mapbox_id" type="text" size="30" placeholder="e.g. examples.map-yr0njcqy"/>
       <br /><br />
-      <button id="download" style="font-size:200%;padding:20px;">Download Tiles</button>
-      <button id="clear" style="font-size:200%;padding:20px;">Clear Tiles</button>
+      <button id="download" style="padding:20px;">Download Tiles</button>
+      <button id="clear" style="padding:20px;">Clear Tiles</button>
     </div>
     
     <!-- DEBUG SCRIPT -->
