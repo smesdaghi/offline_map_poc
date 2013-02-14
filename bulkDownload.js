@@ -8,7 +8,7 @@ function bulkDownload(urls, targetDir, callback) {
         var rootDir = fileSystem.root.fullPath;
         if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
         var tilesDir = rootDir + targetDir;
-        
+        console.log('Downloading to: ' + tilesDir);
         downloadTile(urls, 0, tilesDir, callback);
     },
     function() { alert("Failure!"); } //filesystem failure

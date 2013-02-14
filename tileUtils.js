@@ -25,7 +25,6 @@ function pyramid(mapID, lat, lon, options) {
         t_x = long2tile(lon, zoom);
         t_y = lat2tile(lat, zoom);
         r = radius * Math.pow(2, (Math.max(zoom, zoomLimit) - zoomLimit));
-        console.log(zoom + ' ' + r);
         for (x = t_x-r; x <= t_x+r; x++) {
             for (y = t_y-r; y <= t_y+r; y++) {
                 urls.push(tile2url(mapID, zoom, x, y));
