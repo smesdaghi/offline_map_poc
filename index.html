@@ -17,8 +17,7 @@
 
 //sloppy global but ok for now
 var MAP;
-var BASE_MAPS = {};
-var TILE_LAYER;
+var BASE_LAYERS = {};
 var FILESYSTEM;
 
 function clearTiles(callback) {
@@ -59,12 +58,12 @@ function reloadMap() {
     }
 
     //clear out old layers
-    for (mapID in BASE_MAPS) {
-        var lyr = BASE_MAPS[mapID];
+    for (mapID in BASE_LAYERS) {
+        var lyr = BASE_LAYERS[mapID];
         lyr.redraw(); //clear tiles
         MAP.removeLayer(lyr);
     }
-    BASE_MAPS = {};
+    BASE_LAYERS = {};
     
     var mapboxIDs = getMapIDs();
     if (mapboxIDs == null) { return; } //no ids
@@ -78,11 +77,11 @@ function reloadMap() {
             minZoom: 3,
             maxZoom: 17
         })
-        BASE_MAPS[mapID] = lyr;
+        BASE_LAYERS[mapID] = lyr;
         lyr.addTo(MAP); 
     }
     
-    L.control.layers(BASE_MAPS, {}).addTo(MAP);
+    L.control.layers(BASE_LAYERS, {}).addTo(MAP);
 }
 
 $(document).ready(function() {
