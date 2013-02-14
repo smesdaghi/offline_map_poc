@@ -92,9 +92,9 @@ function reloadMap() {
 $(document).ready(function() {
     //Some bookkeeping code for mapbox id
     $("#mapbox_id")
-    .val(localStorage["MAPBOX_ID"])
+    .val(localStorage["MAPBOX_IDS"])
     .off("change")
-    .on("change", function() { localStorage["MAPBOX_ID"] = $(this).val(); });
+    .on("change", function() { localStorage["MAPBOX_IDS"] = $(this).val(); });
 
     //Real page setup on phonegap initialization
 	$(document).off("deviceready").on("deviceready", function() {
