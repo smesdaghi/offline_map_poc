@@ -13,6 +13,10 @@
     <script src="cordova.js"></script>
     <script type="text/javascript">
 
+//for easy debugging
+var map;
+var rootDir;
+
 function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
     LocalFileSystem.PERSISTENT, 0, 
@@ -25,7 +29,6 @@ function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/q
       var fileTransfer = new FileTransfer();
       fileTransfer.download(encodeURI(url), fn,
         function(theFile) { 
-            alert("download complete: " + theFile.toURL());
             $("#dl_img").attr("src", theFile.toURL()); 
         },
         function(error) { alert("download error code: " + error.code); }
@@ -36,13 +39,26 @@ function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/q
   );
 };
 
+function initMap(tile_url_format) {
+    map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
+    L.tileLayer(tile_url_format, {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
+        maxZoom: 18
+    }).addTo(map);
+}
+
 $(document).ready(function() {
-    var map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
-	L.tileLayer('file:///home/max/tiles/{z}/{x}/{y}.png', {
-	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
-	    maxZoom: 18
-	}).addTo(map);
-	
+    
+    window.requestFileSystem(
+	    LocalFileSystem.PERSISTENT, 0, 
+	    function onFileSystemSuccess(fs) {
+	        rootDir = fs.root.fullPath;
+	        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
+	        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
+	    },
+        function() { alert("Failure!"); } //filesystem failure
+    );
+    
 	$(document).off("deviceready").on("deviceready", function() {
 	  $("#download").off("click").on("click", function() {
 	    downloadFile("http://silviaterra.com/static/images/circle_logo_backgrd_match.png", "newfile.png");
