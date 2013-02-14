@@ -1,6 +1,6 @@
-function pyramid(mapID, lat, lon, options) {
+function pyramid(mapIDs, lat, lon, options) {
     /*    
-    Given a mapID, a central lat/lng, and zoomLimit/radius options 
+    Given a list of mapIDs, a central lat/lng, and zoomLimit/radius options 
     generate the urls for the pyramid of tiles for zoom levels 3-17
     
     radius is how many tiles from the center at zoomLimit
@@ -19,15 +19,18 @@ function pyramid(mapID, lat, lon, options) {
     var radius = options['radius'] || 1; 
     
     //declare vars outside of loop
-    var urls = [], zoom, t_x, t_y, r, x, y;
+    var urls = [], mapID, zoom, t_x, t_y, r, x, y;
     
-    for (zoom=minZoom; zoom<maxZoom; zoom++) {
-        t_x = long2tile(lon, zoom);
-        t_y = lat2tile(lat, zoom);
-        r = radius * Math.pow(2, (Math.max(zoom, zoomLimit) - zoomLimit));
-        for (x = t_x-r; x <= t_x+r; x++) {
-            for (y = t_y-r; y <= t_y+r; y++) {
-                urls.push(tile2url(mapID, zoom, x, y));
+    for (var i=0; l=mapIDs.length; i<l; i++) { //iterate over map ids
+        mapID = mapIDs[i];
+        for (zoom=minZoom; zoom<maxZoom; zoom++) { //iterate over zoom levels
+            t_x = long2tile(lon, zoom);
+            t_y = lat2tile(lat, zoom);
+            r = radius * Math.pow(2, (Math.max(zoom, zoomLimit) - zoomLimit));
+            for (x = t_x-r; x <= t_x+r; x++) { //iterate over x's
+                for (y = t_y-r; y <= t_y+r; y++) { //iterate over y's
+                    urls.push(tile2url(mapID, zoom, x, y));
+                }
             }
         }
     }
