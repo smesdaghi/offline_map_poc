@@ -21,7 +21,7 @@ function pyramid(mapIDs, lat, lon, options) {
     //declare vars outside of loop
     var urls = [], mapID, zoom, t_x, t_y, r, x, y;
     
-    for (var i=0; l=mapIDs.length; i<l; i++) { //iterate over map ids
+    for (var i=0, l=mapIDs.length; i<l; i++) { //iterate over map ids
         mapID = mapIDs[i];
         for (zoom=minZoom; zoom<maxZoom; zoom++) { //iterate over zoom levels
             t_x = long2tile(lon, zoom);
@@ -34,7 +34,6 @@ function pyramid(mapIDs, lat, lon, options) {
             }
         }
     }
-    
     return urls;
 }
 
