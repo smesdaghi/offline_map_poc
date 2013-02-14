@@ -86,7 +86,7 @@ $(document).ready(function() {
 		);
 		
 		$("#clear").off("click").on("click", function() {
-		    clearTiles(function(){ alert("Tiles cleared successfully"); });
+		    clearTiles(function(){ reloadMap(); alert("Tiles cleared successfully"); });
 		});
 
 	    $("#download").off("click").on("click", function() {
@@ -95,7 +95,7 @@ $(document).ready(function() {
 	           bulkDownload(
 	               pyramid(mapID, 38.255, -85.73, {'minZoom':14, 'maxZoom':16}), //tile urls
 	               'tiles',
-	               function() { reloadMap(); }
+	               function() { alert("Download successful!"); reloadMap(); }
 	           );
 	        } else {
 	           alert("Enter a MapBox Map ID");
