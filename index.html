@@ -17,6 +17,7 @@
 
 //sloppy global but ok for now
 var MAP;
+var MAP_CONTROL;
 var BASE_LAYERS = {};
 var FILESYSTEM;
 
@@ -56,6 +57,9 @@ function reloadMap() {
     if (!MAP) { //initialize map if first time
         MAP = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
     }
+    
+    //clear out old MAP_CONTROL
+    if (MAP_CONTROL) { MAP.removeControl(MAP_CONTROL); }
 
     //clear out old layers
     for (mapID in BASE_LAYERS) {
@@ -81,7 +85,8 @@ function reloadMap() {
         lyr.addTo(MAP); 
     }
     
-    L.control.layers(BASE_LAYERS, {}).addTo(MAP);
+    MAP_CONTROL = L.control.layers(BASE_LAYERS, {});
+    MAP_CONTROL.addTo(MAP);
 }
 
 $(document).ready(function() {
