@@ -17,6 +17,7 @@
 
 //sloppy global but ok for now
 var MAP;
+var BASE_MAPS = [];
 var TILE_LAYER;
 var FILESYSTEM;
 
@@ -53,6 +54,8 @@ function reloadMap() {
         MAP.removeLayer(TILE_LAYER);
         TILE_LAYER = null;
     }
+
+    BASE_MAPS = [];
     
     format = tileFormat4FS(FILESYSTEM);
     if (!format) { return; }
@@ -62,8 +65,10 @@ function reloadMap() {
         minZoom: 3,
         maxZoom: 17
     })
-    
+    BASE_MAPS.push(TILE_LAYER);
     TILE_LAYER.addTo(MAP);
+    
+    L.control.layers(BASE_MAPS, []).addTo(MAP);
 }
 
 $(document).ready(function() {
