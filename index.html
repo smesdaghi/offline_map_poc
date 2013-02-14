@@ -20,21 +20,17 @@ var rootDir;
 function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
     LocalFileSystem.PERSISTENT, 0, 
-    function onFileSystemSuccess(fileSystem) {
+    function(fileSystem) { //success
+        var rootDir = fileSystem.root.fullPath;
+        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
+        var fn = rootDir + target_fn;
       
-      var rootDir = fileSystem.root.fullPath;
-      if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
-      var fn = rootDir + target_fn;
-      
-      var fileTransfer = new FileTransfer();
-      fileTransfer.download(encodeURI(url), fn,
-        function(theFile) { 
-            $("#dl_img").attr("src", theFile.toURL()); 
-        },
-        function(error) { alert("download error code: " + error.code); }
-      );    
+        var fileTransfer = new FileTransfer();
+        fileTransfer.download(encodeURI(url), fn,
+            function(theFile) { $("#dl_img").attr("src", theFile.toURL()); },
+            function(error) { alert("download error code: " + error.code); }
+        );    
     },
-    
     function() { alert("Failure!"); } //filesystem failure
   );
 };
@@ -48,21 +44,21 @@ function initMap(tile_url_format) {
 }
 
 $(document).ready(function() {
-    
-    window.requestFileSystem(
-	    LocalFileSystem.PERSISTENT, 0, 
-	    function onFileSystemSuccess(fs) {
-	        rootDir = fs.root.fullPath;
-	        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
-	        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
-	    },
-        function() { alert("Failure!"); } //filesystem failure
-    );
-    
 	$(document).off("deviceready").on("deviceready", function() {
-	  $("#download").off("click").on("click", function() {
-	    downloadFile("http://silviaterra.com/static/images/circle_logo_backgrd_match.png", "newfile.png");
-	  });
+	
+		window.requestFileSystem(
+		    LocalFileSystem.PERSISTENT, 0, 
+		    function(fs) { //success
+		        rootDir = fs.root.fullPath;
+		        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
+		        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
+		    },
+		    function() { alert("Failure!"); } //filesystem failure
+		);
+
+	    $("#download").off("click").on("click", function() {
+	      downloadFile("http://silviaterra.com/static/images/circle_logo_backgrd_match.png", "newfile.png");
+	    });
 	}); 
 });    
 
