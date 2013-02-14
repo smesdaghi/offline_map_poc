@@ -15,7 +15,6 @@
 
 //for easy debugging
 var map;
-var rootDir;
 
 function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
@@ -44,12 +43,19 @@ function initMap(tile_url_format) {
 }
 
 $(document).ready(function() {
+    //Some bookkeeping code for mapbox id
+    $("#mapbox_id")
+    .val(localStorage["MAPBOX_ID"])
+    .off("change")
+    .on("change", function() { localStorage["MAPBOX_ID"] = $(this).val(); });
+
+    //Real page setup on phonegap initialization
 	$(document).off("deviceready").on("deviceready", function() {
 	
 		window.requestFileSystem(
 		    LocalFileSystem.PERSISTENT, 0, 
 		    function(fs) { //success
-		        rootDir = fs.root.fullPath;
+		        var rootDir = fs.root.fullPath;
 		        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
 		        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
 		    },
@@ -67,6 +73,8 @@ $(document).ready(function() {
 <body> 
     <div id="map"></div>
     <div style="text-align:center;margin-top:20px;">
+      MapBox ID: <input id="mapbox_id" type="text" size="50" placeholder="e.g. examples.map-yr0njcqy"/>
+      <br /><br />
       <button id="download" style="font-size:200;padding:20px;">Download</button>
     </div>
     <img id="dl_img" />
