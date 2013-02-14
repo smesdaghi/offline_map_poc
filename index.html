@@ -13,8 +13,20 @@
     <script src="cordova.js"></script>
     <script type="text/javascript">
 
-//for easy debugging
-var map;
+//sloppy global but ok for now
+var FILESYSTEM;
+
+function clearTiles(callback) {
+    FILESYSTEM.getDirectory('tiles', {},
+	    function(dir) { //success
+	       dir.removeRecursively(
+                function() { callback(); }, 
+                function(){ alert("Error deleting!"); }
+            );
+	    }, 
+	    function() { alert("Error deleting tiles")} //fail
+    );
+}
 
 function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/questions/6417055/
   window.requestFileSystem(
@@ -35,7 +47,7 @@ function downloadFile(url, target_fn) { //inspired by http://stackoverflow.com/q
 };
 
 function initMap(tile_url_format) {
-    map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
+    var map = L.map('map', {'maxZoom': 17}).setView([38.255, -85.73], 15);
     L.tileLayer(tile_url_format, {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; MapBox',
         maxZoom: 18
@@ -55,6 +67,7 @@ $(document).ready(function() {
 		window.requestFileSystem(
 		    LocalFileSystem.PERSISTENT, 0, 
 		    function(fs) { //success
+		        FILESYSTEM = fs; //set global - sloppy, I know
 		        var rootDir = fs.root.fullPath;
 		        if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
 		        initMap(rootDir + 'tiles/{z}/{x}/{y}.png');
@@ -75,7 +88,7 @@ $(document).ready(function() {
     <div style="text-align:center;margin-top:20px;">
       MapBox ID: <input id="mapbox_id" type="text" size="50" placeholder="e.g. examples.map-yr0njcqy"/>
       <br /><br />
-      <button id="download" style="font-size:200;padding:20px;">Download</button>
+      <button id="download" style="font-size:200;padding:20px;">Download Tiles</button>
     </div>
     <img id="dl_img" />
     
