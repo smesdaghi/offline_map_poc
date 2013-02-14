@@ -48,18 +48,21 @@ function getMapIDs() {
     else { return mapboxIDs; }
 }
 
-function reloadMap() {
+function reloadMap(options) {
     /*
      * Clear layers and reset based
      * on current mapIDs
      */
+     
+    //handle options
+    var clear = options['clear'] || false;
 
     if (!MAP) { //initialize map if first time
         MAP = L.map('map', {'minZoom': 3, 'maxZoom': 17}).setView([38.255, -85.73], 15);
     }
     
     //clear out old MAP_CONTROL
-    if (MAP_CONTROL) { MAP.removeControl(MAP_CONTROL); }
+    MAP.removeControl(MAP_CONTROL)
 
     //clear out old layers
     for (mapID in BASE_LAYERS) {
@@ -68,6 +71,8 @@ function reloadMap() {
         MAP.removeLayer(lyr);
     }
     BASE_LAYERS = {};
+    
+    if (clear) { return; } //job done if just clear
     
     var mapboxIDs = getMapIDs();
     if (mapboxIDs == null) { return; } //no ids
@@ -109,7 +114,7 @@ $(document).ready(function() {
 		);
 		
 		$("#clear").off("click").on("click", function() {
-		    clearTiles(function(){ reloadMap(); alert("Tiles cleared successfully"); });
+		    clearTiles(function(){ reloadMap({'clear':true}); alert("Tiles cleared successfully"); });
 		});
 
 	    $("#download").off("click").on("click", function() {
