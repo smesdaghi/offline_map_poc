@@ -13,7 +13,7 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
         var progressBar = progressModal.find(".bar");
         progressBar.css('width', '0%');
         progressModal.modal('show');
-        downloadTile(urls, 0, tilesDir, progressModal, , callback);
+        downloadTile(urls, 0, tilesDir, progressModal, progressBar, callback);
     },
     function() { alert("Failure!"); } //filesystem failure
   );    
