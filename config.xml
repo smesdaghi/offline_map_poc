@@ -12,7 +12,7 @@
     <name>Offline Mapping</name>
 
     <description>
-        Cache Mapbox tiles in PhoneGap
+        Cache MapBox tiles in PhoneGap
     </description>
 
     <author href="http://www.silviaterra.com"
@@ -28,7 +28,7 @@
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     
-    <!-- Access SilviaTerra site for weinre -->
+    <!-- Make sure you can access MapBox servers -->
     <access origin="*" subdomains="true" />
 
 </widget>
