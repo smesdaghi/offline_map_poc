@@ -64,7 +64,7 @@ function reloadMap(options) {
     }
     
     //clear out old MAP_CONTROL
-    if (MAP_CONTROL) { MAP.removeControl(MAP_CONTROL); }
+    if (MAP_CONTROL) { MAP.removeControl(MAP_CONTROL); MAP_CONTROL=null; }
 
     //clear out old layers
     for (mapID in BASE_LAYERS) {
