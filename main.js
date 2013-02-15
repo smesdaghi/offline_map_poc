@@ -5,7 +5,7 @@ function getMapIDs() {
      * Return a list of mapIDs or null 
      */
     var mapboxIDs = (localStorage["MAPBOX_IDS"] || "").split(",");
-    if (mapboxIDs == [""]) { return null; } //no ids
+    if (mapboxIDs[0] == "") { return null; } //no ids
     else { return mapboxIDs; }
 }
 

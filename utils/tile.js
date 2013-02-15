@@ -17,7 +17,7 @@ function pyramid(mapIDs, lat, lon, options) {
     //handle options
     var zoomLimit = options['zoomLimit'] || 14;
     var minZoom = options['minZoom'] || 3;
-    var maxZoom = options['maxZoom'] || 3;
+    var maxZoom = options['maxZoom'] || 17;
     var radius = options['radius'] || 1; 
     
     //declare vars outside of loop
