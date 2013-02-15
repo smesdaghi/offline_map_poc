@@ -16,7 +16,6 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
             '<div class="progress progress-striped active"><div class="bar" style="width: 0%;"></div></div>'
         );
         var progressBar = progressModal.find(".bar");
-        progressBar.css('width', '0%');
         
         downloadTile(urls, 0, tilesDir, progressModal, progressBar, callback);
     },
@@ -42,7 +41,7 @@ function downloadTile(urls, index, tilesDir, progressModal, progressBar, callbac
   
     var fileTransfer = new FileTransfer();
     fileTransfer.download(url, fn,
-        function(theFile) { downloadTile(urls, index+1, tilesDir, callback); },
+        function(theFile) { downloadTile(urls, index+1, tilesDir, progressModal, progressBar, callback); },
         function(error) { alert("download error code: " + error.code); }
     );    
 }
