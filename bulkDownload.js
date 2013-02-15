@@ -1,4 +1,4 @@
-function bulkDownload(urls, targetDir, callback) {
+function bulkDownload(urls, targetDir, progressModal, callback) {
   /*
    * Bulk download of urls to the targetDir (relative path from root) 
    */
@@ -8,14 +8,27 @@ function bulkDownload(urls, targetDir, callback) {
         var rootDir = fileSystem.root.fullPath;
         if (rootDir[rootDir.length-1] != '/') { rootDir += '/'; }
         var tilesDir = rootDir + targetDir;
-        downloadTile(urls, 0, tilesDir, callback);
+        
+        //show progress modal
+        var progressBar = progressModal.find(".bar");
+        progressBar.css('width', '0%');
+        progressModal.modal('show');
+        downloadTile(urls, 0, tilesDir, progressModal, , callback);
     },
     function() { alert("Failure!"); } //filesystem failure
   );    
 }
 
-function downloadTile(urls, index, tilesDir, callback) {
-    if (index >= urls.length) { callback(); return; } //callback if done
+function downloadTile(urls, index, tilesDir, progressModal, progressBar, callback) {
+    if (index >= urls.length) { //callback if done
+        progressModal.modal('hide');
+        callback(); 
+        return; 
+    } 
+    
+    //update modal progress
+    var dl_precent = index * 100.0 / urls.length; 
+    progressBar.css('width', dl_percent + '%');
     
     var url = urls[index];
     //all urls start with: http://api.tiles.mapbox.com/v3/ - length 31
