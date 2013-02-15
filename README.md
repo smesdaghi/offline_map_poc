@@ -3,7 +3,7 @@ PhoneGap + MapBox + Leaflet: Offline Mapping Proof of Concept
 Demo Android app available for download [here](https://build.phonegap.com/apps/311874/share)
 
 ##Usage
-Simply enter a MapBox map id (looks like __example.map-asd23rds___) or several
+Simply enter a MapBox map id (looks like *example.map-asd23rds*) or several
 (separated by a comma) and click the "Download Tiles" button.  You can click
 "Clear Tiles" to clear the tiles.
 
