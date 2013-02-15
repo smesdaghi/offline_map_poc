@@ -4,10 +4,8 @@
     <title>Proof of Concept</title>
     <meta name="viewport" content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0"> 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" />
-    <style>
-    #map { height: 300px; }
-    </style>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
@@ -137,9 +135,9 @@ $(document).ready(function() {
     </script>
 </head>
 <body> 
-    <div id="map_wrapper"><div id="map"></div></div>
+    <div id="map_wrapper"><div id="map" style="height: 300px;"></div></div>
     <div style="text-align:center;margin-top:20px;">
-      MapBox ID: <input id="mapbox_id" type="text" size="30" placeholder="e.g. examples.map-yr0njcqy"/>
+      MapBox IDs: <input id="mapbox_id" type="text" size="30" placeholder="e.g. examples.map-yr0njcqy"/>
       <br /><br />
       <button id="download" style="padding:20px;">Download Tiles</button>
       <button id="clear" style="padding:20px;">Clear Tiles</button>
@@ -151,6 +149,7 @@ $(document).ready(function() {
 	  </div>
 	  <div class="modal-body">
 	    <div class="progress progress-striped active">
+	       Tiles on the way!<br />
 		  <div class="bar" style="width: 0%;"></div>
 		</div>
 	  </div>
