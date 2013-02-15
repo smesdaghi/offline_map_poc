@@ -12,7 +12,7 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
         //show progress modal
         progressModal.modal('show');
         //add progress bar
-        progressModal.append(
+        progressModal.find('modal-body').append(
             '<div class="progress progress-striped active"><div class="bar" style="width: 0%;"></div></div>'
         );
         var progressBar = progressModal.find(".bar");
@@ -25,7 +25,10 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
 
 function downloadTile(urls, index, tilesDir, progressModal, progressBar, callback) {
     if (index >= urls.length) { //callback if done
-        progressModal.html("").modal('hide'); //clear and hide modal
+        //clear and hide modal
+        progressModal.find('modal-body').html("");
+        progressModal.modal('hide');
+        
         callback(); 
         return; 
     } 
