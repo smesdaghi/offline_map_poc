@@ -53,6 +53,10 @@ This project is solely intended to be a proof of concept.  The core utilities
 are in the utils directory - most of the functions are documented and should
 be fairly straightforward to understand.
 
+To actually make a mobile "app" out of this code, simply fork this project,
+create a [PhoneGap Build](http://build.phonegap.com/) account and then
+tell PhoneGap Build to pull from your git repo.  
+
 A few "gotchas" to look out for:
 
  * Domain whitelisting in config.xml - make sure you allow access to MapBox servers
