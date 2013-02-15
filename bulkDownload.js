@@ -32,8 +32,7 @@ function downloadTile(urls, index, tilesDir, progressModal, progressBar, callbac
     } 
     
     //update modal progress
-    var dl_precent = index * 100.0 / urls.length; 
-    progressBar.css('width', dl_percent + '%');
+    progressBar.css('width', (index * 100.0 / urls.length) + '%');
     
     var url = urls[index];
     //all urls start with: http://api.tiles.mapbox.com/v3/ - length 31
