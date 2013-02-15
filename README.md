@@ -2,6 +2,11 @@ PhoneGap + MapBox + Leaflet: Offline Mapping Proof of Concept
 ===============
 Demo Android app available for download [here](https://build.phonegap.com/apps/311874/share)
 
+<img style="height:3.5in;margin-right:0.5in;"
+src="http://silviaterra.github.com/offline_map_poc/download.png" />
+<img style="height:3.5in;"
+src="http://silviaterra.github.com/offline_map_poc/main.png" />
+
 ##Usage
 Simply enter a MapBox map id (looks like *example.map-asd23rds*) or several
 (separated by a comma) and click the "Download Tiles" button.  You can click
