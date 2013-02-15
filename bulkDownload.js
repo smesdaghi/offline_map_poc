@@ -10,9 +10,14 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
         var tilesDir = rootDir + targetDir;
         
         //show progress modal
+        progressModal.modal('show');
+        //add progress bar
+        progressModal.append(
+            '<div class="progress progress-striped active"><div class="bar" style="width: 0%;"></div></div>'
+        );
         var progressBar = progressModal.find(".bar");
         progressBar.css('width', '0%');
-        progressModal.modal('show');
+        
         downloadTile(urls, 0, tilesDir, progressModal, progressBar, callback);
     },
     function() { alert("Failure!"); } //filesystem failure
@@ -21,7 +26,7 @@ function bulkDownload(urls, targetDir, progressModal, callback) {
 
 function downloadTile(urls, index, tilesDir, progressModal, progressBar, callback) {
     if (index >= urls.length) { //callback if done
-        progressModal.modal('hide');
+        progressModal.html("").modal('hide'); //clear and hide modal
         callback(); 
         return; 
     } 
