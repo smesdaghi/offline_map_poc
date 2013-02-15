@@ -112,7 +112,7 @@ $(document).ready(function() {
 		    LocalFileSystem.PERSISTENT, 0, 
 		    function(fs) { //success
 		        FILESYSTEM = fs; //set global - sloppy, I know
-		        reloadMap();
+		        reloadMap({'clear':false});
 		    },
 		    function() { alert("Failure!"); } //filesystem failure
 		);
@@ -128,7 +128,7 @@ $(document).ready(function() {
                pyramid(mapboxIDs, 38.255, -85.73, {'minZoom':14, 'maxZoom':16}), //tile urls
                'tiles',
                $("#progress_modal"),
-               function() { alert("Download successful!"); reloadMap(); }
+               function() { alert("Download successful!"); reloadMap({'clear':false}); }
             );
 	    });
 	}); 
