@@ -23,6 +23,8 @@ function pyramid(mapIDs, lat, lon, options) {
     //declare vars outside of loop
     var urls = [], mapID, zoom, t_x, t_y, r, x, y;
     
+    var skipCounter = 0;
+    
     for (var i=0, l=mapIDs.length; i<l; i++) { //iterate over map ids
         mapID = mapIDs[i];
         for (zoom=minZoom; zoom<maxZoom; zoom++) { //iterate over zoom levels
@@ -31,11 +33,21 @@ function pyramid(mapIDs, lat, lon, options) {
             r = radius * Math.pow(2, (Math.max(zoom, zoomLimit) - zoomLimit));
             for (x = t_x-r; x <= t_x+r; x++) { //iterate over x's
                 for (y = t_y-r; y <= t_y+r; y++) { //iterate over y's
-                    urls.push(tile2url(mapID, zoom, x, y));
+                	
+                	if (zoom < 0 || x < 0 || y < 0) {
+                		skipCounter++;
+                	} else {
+                		urls.push(tile2url(mapID, zoom, x, y));
+                	}
                 }
             }
         }
     }
+
+	console.log('buffered urls: ' + urls.length );
+	console.log('skipped due to invalid grid index: ' + skipCounter );
+	alert('will cache: ' + urls.length + ' skipping due to malformed url: ' + skipCounter);
+	
     return urls;
 }
 
